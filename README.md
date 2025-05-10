@@ -36,6 +36,12 @@ Dive into various topics related to this repository, including:
 
 ## Get Started 🚀
 
+Install **uv** with:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
 Ready to take your WhatsApp messaging to the next level? Download the latest release of the Whatsapp-Bot script from [here](https://github.com/vrishank-cmd/Whatsapp-Bot/releases). Execute the file and start automating your messaging tasks seamlessly.
 
 For more information and updates, visit the [repository](https://github.com/vrishank-cmd/Whatsapp-Bot).
