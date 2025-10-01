@@ -49,7 +49,7 @@ def start_bot(
         TextColumn("[progress.description]{task.description}"),
         console=console,
     ) as progress:
-        task = progress.add_task("Initializing AI systems...", total=None)
+        progress.add_task("Initializing AI systems...", total=None)
 
         # Import and run the main bot
         import asyncio
@@ -246,7 +246,7 @@ def show_version():
 
     # Check feature availability
     try:
-        import openai
+        import openai  # noqa: F401
 
         ai_status = "✅ Available"
         ai_version = "Latest"
