@@ -47,12 +47,12 @@
         "max_concurrent_sends": 5
     },
     "messages": {
-        "welcome": "🤖 **AI-Powered WhatsApp Bot 2025** �",
-        "success": "✅ All messages successfully sent with AI optimization!",
-        "error_prefix": "❌ Error:",
-        "warning_prefix": "⚠️ Warning:",
-        "info_prefix": "ℹ️ Info:",
-        "ai_prefix": "🤖 AI Assistant:"
+        "welcome": "AI-Powered WhatsApp Bot 2025",
+        "success": "All messages successfully sent with AI optimization!",
+        "error_prefix": "Error:",
+        "warning_prefix": "Warning:",
+        "info_prefix": "Info:",
+        "ai_prefix": "AI Assistant:"
     },
     "ui": {
         "theme": "modern",
