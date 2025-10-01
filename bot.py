@@ -5,15 +5,33 @@ import re
 import os
 import json
 import logging
+import asyncio
 from datetime import datetime, timedelta
 from typing import List, Optional, Tuple
 try:
     from colorama import init, Fore, Style
+    from rich.console import Console
+    from rich.progress import Progress, SpinnerColumn, TextColumn
+    from rich.panel import Panel
+    from rich.table import Table
     init()  # Initialize colorama for Windows compatibility
     COLORS_AVAILABLE = True
+    RICH_AVAILABLE = True
 except ImportError:
     COLORS_AVAILABLE = False
+    RICH_AVAILABLE = False
     Fore = Style = type('MockColor', (), {'RED': '', 'GREEN': '', 'YELLOW': '', 'CYAN': '', 'RESET_ALL': ''})()
+
+# Import AI features (2025)
+try:
+    from ai_features import ai_assistant, smart_scheduler, security_manager, analytics
+    AI_FEATURES_AVAILABLE = True
+except ImportError:
+    AI_FEATURES_AVAILABLE = False
+    ai_assistant = smart_scheduler = security_manager = analytics = None
+
+# Rich console for enhanced UI
+console = Console() if RICH_AVAILABLE else None
 
 # Configuration and Logging Setup
 def load_config() -> dict:
@@ -71,10 +89,10 @@ def show_banner():
     banner = r"""
                        ______
                     .-"      "-.
-                   /  *ViRuS*   \
-       _          |              |          _
+                   /  *AI-Bot*   \
+       _          |    2025      |          _
       ( \         |,  .-.  .-.  ,|         / )
-       > "=._     | )(_0_/\_0_)( |     _.=" <
+       > "=._     | )(_◉_/\_◉_)( |     _.=" <
       (_/"=._"=._ |/     /\     \| _.="_.="\_)
              "=._ (_     ^^     _)"_.="
                  "=\__|IIIIII|__/="
@@ -85,13 +103,16 @@ def show_banner():
      (_/                                    \_)
  ____________________________________________________
  ----------------------------------------------------        
-        #  Whatsapp-Bot
-        #  Author : The-Real-Virus
-        #  https://github.com/The-Real-Virus
+        #  AI-Powered WhatsApp Bot 2025
+        #  Enhanced with Machine Learning
+        #  Smart • Secure • Intelligent
  ____________________________________________________
  ----------------------------------------------------
 """
-    print(banner)
+    if RICH_AVAILABLE and console:
+        console.print(Panel(banner, style="bold green"))
+    else:
+        print(banner)
 
 # Show banner at script startup
 show_banner()
@@ -276,19 +297,37 @@ def get_phone_numbers() -> Optional[List[str]]:
     return numbers if numbers else None
 
 def get_message_type() -> int:
-    """Ask user whether to send text, image, or video."""
+    """Ask user whether to send text, image, or video with AI assistance."""
     max_retries = config.get('default_settings', {}).get('max_retries', 3)
     retries = 0
     
+    # Show AI features availability
+    if AI_FEATURES_AVAILABLE and ai_assistant:
+        print(f"{Fore.GREEN}🤖 AI Assistant: Available{Style.RESET_ALL}")
+    
     while retries < max_retries:
         try:
-            choice = input(f"{Fore.CYAN}What do you want to send? (1) Text (2) Image (3) Video: {Style.RESET_ALL}").strip()
-            if choice in ["1", "2", "3"]:
-                logger.info(f"Message type selected: {['Text', 'Image', 'Video'][int(choice)-1]}")
-                return int(choice)
+            if RICH_AVAILABLE and console:
+                console.print("\n[bold cyan]📱 Message Type Selection[/bold cyan]")
+                console.print("1️⃣  Text Message (+ AI suggestions)")
+                console.print("2️⃣  Image/Photo")  
+                console.print("3️⃣  Video")
+                console.print("4️⃣  🤖 AI-Generated Message")
+                console.print("5️⃣  📊 Show Analytics Dashboard")
+                choice = input("\nSelect option (1-5): ").strip()
+            else:
+                choice = input(f"{Fore.CYAN}What do you want to send?\n(1) Text (2) Image (3) Video (4) AI-Generated (5) Analytics: {Style.RESET_ALL}").strip()
+            
+            if choice in ["1", "2", "3", "4", "5"]:
+                selected = int(choice)
+                if selected == 5:
+                    show_analytics_dashboard()
+                    continue
+                logger.info(f"Message type selected: {['Text', 'Image', 'Video', 'AI-Generated'][selected-1] if selected <= 4 else 'Analytics'}")
+                return selected
             else:
                 retries += 1
-                print(f"{Fore.RED}⚠️ Invalid choice! Enter 1, 2, or 3. ({retries}/{max_retries}){Style.RESET_ALL}")
+                print(f"{Fore.RED}⚠️ Invalid choice! Enter 1-5. ({retries}/{max_retries}){Style.RESET_ALL}")
         except Exception as e:
             retries += 1
             logger.error(f"Error getting message type: {e}")
@@ -297,6 +336,64 @@ def get_message_type() -> int:
     logger.warning("Maximum retries exceeded for message type, defaulting to text")
     print(f"{Fore.YELLOW}⚠️ Maximum retries exceeded. Defaulting to Text message.{Style.RESET_ALL}")
     return 1
+
+def show_analytics_dashboard():
+    """Display analytics dashboard with AI insights."""
+    if not analytics:
+        print(f"{Fore.RED}📊 Analytics not available. Please install AI features.{Style.RESET_ALL}")
+        return
+    
+    try:
+        report = analytics.generate_delivery_report()
+        
+        if RICH_AVAILABLE and console:
+            # Create rich table
+            table = Table(title="📊 WhatsApp Bot Analytics Dashboard - 2025")
+            table.add_column("Metric", style="cyan")
+            table.add_column("Value", style="green")
+            
+            table.add_row("📅 Period", report["period"])
+            table.add_row("📧 Total Messages", str(report["total_messages"]))
+            table.add_row("✅ Delivery Rate", f"{report['delivery_rate']}%")
+            table.add_row("👀 Read Rate", f"{report['read_rate']}%")
+            table.add_row("⏱️ Avg Response Time", f"{report['avg_response_time']}s")
+            
+            console.print(table)
+            
+            if report["best_hours"]:
+                console.print("\n🕐 Best Performance Hours:")
+                for hour_data in report["best_hours"]:
+                    console.print(f"  {hour_data['hour']}:00 - Success Rate: {hour_data['success_rate']}%")
+        else:
+            print(f"\n{Fore.CYAN}📊 Analytics Dashboard{Style.RESET_ALL}")
+            print(f"📅 Period: {report['period']}")
+            print(f"📧 Total Messages: {report['total_messages']}")
+            print(f"✅ Delivery Rate: {report['delivery_rate']}%")
+            print(f"👀 Read Rate: {report['read_rate']}%")
+            print(f"⏱️ Avg Response Time: {report['avg_response_time']}s")
+            
+        input(f"\n{Fore.YELLOW}Press Enter to continue...{Style.RESET_ALL}")
+        
+    except Exception as e:
+        print(f"{Fore.RED}Error displaying analytics: {e}{Style.RESET_ALL}")
+
+async def get_ai_message_suggestions(context: str = "") -> List[str]:
+    """Get AI-powered message suggestions."""
+    if not AI_FEATURES_AVAILABLE or not ai_assistant:
+        return ["AI features not available. Please install requirements and set API keys."]
+    
+    try:
+        suggestions = await ai_assistant.generate_message_suggestions(context, "friendly")
+        return suggestions
+    except Exception as e:
+        return [f"Error getting AI suggestions: {str(e)}"]
+
+def analyze_message_sentiment(message: str) -> dict:
+    """Analyze message sentiment with AI."""
+    if not AI_FEATURES_AVAILABLE or not ai_assistant:
+        return {"error": "AI features not available"}
+    
+    return ai_assistant.analyze_sentiment(message)
 
 def get_media_path() -> Optional[str]:
     """Ask for image or video path with validation."""
@@ -317,8 +414,8 @@ def get_media_path() -> Optional[str]:
     print(f"{Fore.RED}❌ Maximum retries exceeded for media file selection.{Style.RESET_ALL}")
     return None
 
-def main():
-    """Enhanced main function with comprehensive error handling."""
+async def main():
+    """Enhanced main function with comprehensive error handling and AI features."""
     try:
         welcome_msg = config.get('messages', {}).get('welcome', '📲 **Automated WhatsApp Message Sender** 📩')
         print(f"\n{Fore.GREEN}{welcome_msg}{Style.RESET_ALL}\n")
@@ -340,7 +437,46 @@ def main():
                 print(f"{Fore.RED}⚠️ Message cannot be empty!{Style.RESET_ALL}")
                 logger.error("Empty message provided")
                 return
+            
+            # AI sentiment analysis
+            if AI_FEATURES_AVAILABLE:
+                sentiment = analyze_message_sentiment(message)
+                if "recommendation" in sentiment:
+                    print(f"{Fore.YELLOW}🤖 AI Insight: {sentiment['recommendation']}{Style.RESET_ALL}")
+                    
             media_path = None
+            
+        elif msg_type == 4:  # AI-Generated message
+            if not AI_FEATURES_AVAILABLE or not ai_assistant:
+                print(f"{Fore.RED}🤖 AI features not available. Please install requirements.{Style.RESET_ALL}")
+                return
+                
+            context = input(f"{Fore.CYAN}Enter the context for AI message generation: {Style.RESET_ALL}").strip()
+            
+            print(f"{Fore.YELLOW}🤖 Generating AI suggestions...{Style.RESET_ALL}")
+            try:
+                suggestions = await get_ai_message_suggestions(context)
+                print(f"\n{Fore.GREEN}🤖 AI Generated Suggestions:{Style.RESET_ALL}")
+                for i, suggestion in enumerate(suggestions, 1):
+                    print(f"{i}. {suggestion}")
+                
+                choice = input(f"\n{Fore.CYAN}Select suggestion (1-{len(suggestions)}) or type custom message: {Style.RESET_ALL}")
+                
+                try:
+                    choice_idx = int(choice) - 1
+                    if 0 <= choice_idx < len(suggestions):
+                        message = suggestions[choice_idx]
+                    else:
+                        message = choice
+                except ValueError:
+                    message = choice
+                    
+            except Exception as e:
+                print(f"{Fore.RED}AI generation error: {e}{Style.RESET_ALL}")
+                message = input(f"{Fore.CYAN}Enter fallback message: {Style.RESET_ALL}").strip()
+                
+            media_path = None
+            
         else:  # Image or Video message
             media_path = get_media_path()
             if not media_path:
@@ -431,4 +567,20 @@ def main():
 
 if __name__ == "__main__":
     logo()
-    main()
+    # Check for AI features availability
+    if AI_FEATURES_AVAILABLE:
+        print(f"{Fore.GREEN}🤖 AI Features: Enabled (2025 Edition){Style.RESET_ALL}")
+        if smart_scheduler:
+            print(f"{Fore.GREEN}📊 Smart Scheduler: Active{Style.RESET_ALL}")
+        if security_manager:
+            print(f"{Fore.GREEN}🔒 Enhanced Security: Active{Style.RESET_ALL}")
+    else:
+        print(f"{Fore.YELLOW}🤖 AI Features: Install requirements for full 2025 experience{Style.RESET_ALL}")
+    
+    # Run async main function
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print(f"\n{Fore.YELLOW}👋 Goodbye! Thank you for using AI WhatsApp Bot 2025{Style.RESET_ALL}")
+    except Exception as e:
+        print(f"{Fore.RED}❌ Unexpected error: {e}{Style.RESET_ALL}")

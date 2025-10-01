@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  whatsapp-bot:
+    build: .
+    container_name: ai-whatsapp-bot-2025
+    environment:
+      - DISPLAY=:99
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+      - ./config.json:/app/config.json
+      - ./.env:/app/.env
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - bot-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: whatsapp-bot-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - bot-network
+
+  mongodb:
+    image: mongo:7
+    container_name: whatsapp-bot-mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=botuser
+      - MONGO_INITDB_ROOT_PASSWORD=botpass123
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+    networks:
+      - bot-network
+
+  # Optional: Analytics Dashboard (Future Feature)
+  analytics-dashboard:
+    image: grafana/grafana:latest
+    container_name: whatsapp-bot-analytics
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - bot-network
+
+volumes:
+  redis-data:
+  mongo-data:
+  grafana-data:
+
+networks:
+  bot-network:
+    driver: bridge

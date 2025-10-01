@@ -1,0 +1,136 @@
+name: 🤖 AI WhatsApp Bot 2025 - CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11, 3.12]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov black flake8 mypy
+        pip install -r requirements.txt
+    
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Format check with black
+      run: black --check .
+    
+    - name: Type check with mypy
+      run: mypy bot.py --ignore-missing-imports
+    
+    - name: Test with pytest
+      run: |
+        pytest tests/ --cov=. --cov-report=xml
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Security scan with bandit
+      run: |
+        pip install bandit
+        bandit -r . -x tests/
+    
+    - name: Dependency vulnerability scan
+      run: |
+        pip install safety
+        safety check --requirements requirements.txt
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          whatsappbot/ai-bot-2025:latest
+          whatsappbot/ai-bot-2025:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [test, security, docker]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v2025.${{ github.run_number }}
+        release_name: AI WhatsApp Bot 2025 - v2025.${{ github.run_number }}
+        body: |
+          🤖 **AI-Powered WhatsApp Bot 2025 Release**
+          
+          ## New Features
+          - Advanced AI integration
+          - Enhanced security
+          - Modern analytics
+          - Async processing
+          
+          ## Improvements
+          - Better performance
+          - Enhanced UI/UX
+          - Security updates
+          
+          **Docker Image:** `whatsappbot/ai-bot-2025:${{ github.sha }}`
+        draft: false
+        prerelease: false
