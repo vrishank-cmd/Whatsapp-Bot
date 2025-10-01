@@ -18,14 +18,14 @@ def test_imports():
         import re
         import sys
         import os
-        
+
         # Try to import bot module if available
         try:
             import bot
         except ImportError:
             # If bot module fails to import due to missing dependencies, that's OK for CI
             pass
-            
+
         assert True
     except ImportError as e:
         pytest.skip(f"Required modules not available: {e}")
