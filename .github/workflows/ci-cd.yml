@@ -33,8 +33,14 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-cov black flake8 mypy
-        pip install -r requirements.txt || echo 'Some dependencies failed, continuing...'
+        # Install test dependencies first (most critical)
+        pip install pytest pytest-cov
+        # Install linting tools
+        pip install black flake8 mypy || echo 'Linting tools installation had issues'
+        # Install minimal core dependencies
+        pip install pywhatkit pandas colorama python-dotenv || echo 'Some core dependencies failed'
+        # Try remaining dependencies
+        pip install -r requirements.txt || echo 'Some optional dependencies may not be available'
     
     - name: Lint with flake8
       run: |
@@ -49,9 +55,19 @@ jobs:
       run: mypy bot.py --ignore-missing-imports --no-error-summary || echo "Type checking completed"
       continue-on-error: true
     
+    - name: Validate Python environment
+      run: |
+        python --version
+        python -c "import sys; print('Python executable:', sys.executable)"
+        python -c "import pytest; print('pytest available')"
+        
+    - name: Run minimal tests
+      run: |
+        python -m pytest tests/test_minimal.py -v
+        
     - name: Run smoke tests
       run: |
-        python -m pytest tests/test_smoke.py -v || echo "Smoke tests completed"
+        python -m pytest tests/test_smoke.py -v
       continue-on-error: true
         
     - name: Run basic tests  
