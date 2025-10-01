@@ -328,7 +328,7 @@ def get_phone_numbers() -> Optional[List[str]]:
                             numbers.append(num)
 
                     print(
-                        f"{Fore.GREEN}✅ Loaded {len(numbers)} valid contacts from CSV (out of {len(raw_numbers)} total).{Style.RESET_ALL}"
+                        f"{Fore.GREEN}Loaded {len(numbers)} valid contacts from CSV (out of {len(raw_numbers)} total).{Style.RESET_ALL}"
                     )
                     logger.info(f"Successfully loaded {len(numbers)} contacts from CSV")
 
@@ -358,7 +358,7 @@ def get_phone_numbers() -> Optional[List[str]]:
             if validate_phone_number(number):
                 numbers.append(number)
                 print(
-                    f"{Fore.GREEN}✅ Added: {number} ({len(numbers)}/{max_contacts}){Style.RESET_ALL}"
+                    f"{Fore.GREEN}Added: {number} ({len(numbers)}/{max_contacts}){Style.RESET_ALL}"
                 )
             # Error message is handled in validate_phone_number function
 
@@ -386,7 +386,7 @@ def get_message_type() -> int:
     while retries < max_retries:
         try:
             if RICH_AVAILABLE and console:
-                console.print("\n[bold cyan]📱 Message Type Selection[/bold cyan]")
+                console.print("\n[bold cyan]Message Type Selection[/bold cyan]")
                 console.print("1️⃣  Text Message (+ AI suggestions)")
                 console.print("2️⃣  Image/Photo")
                 console.print("3️⃣  Video")
@@ -445,7 +445,7 @@ def show_analytics_dashboard():
 
             table.add_row("📅 Period", report["period"])
             table.add_row("📧 Total Messages", str(report["total_messages"]))
-            table.add_row("✅ Delivery Rate", f"{report['delivery_rate']}%")
+            table.add_row("Delivery Rate", f"{report['delivery_rate']}%")
             table.add_row("👀 Read Rate", f"{report['read_rate']}%")
             table.add_row("⏱️ Avg Response Time", f"{report['avg_response_time']}s")
 
@@ -461,7 +461,7 @@ def show_analytics_dashboard():
             print(f"\n{Fore.CYAN}Analytics Dashboard{Style.RESET_ALL}")
             print(f"📅 Period: {report['period']}")
             print(f"📧 Total Messages: {report['total_messages']}")
-            print(f"✅ Delivery Rate: {report['delivery_rate']}%")
+            print(f"Delivery Rate: {report['delivery_rate']}%")
             print(f"👀 Read Rate: {report['read_rate']}%")
             print(f"⏱️ Avg Response Time: {report['avg_response_time']}s")
 
@@ -531,7 +531,9 @@ async def main():
         # Get list of phone numbers
         numbers = get_phone_numbers()
         if not numbers:
-            print(f"{Fore.RED}⚠️ No valid numbers provided! Exiting.{Style.RESET_ALL}")
+            print(
+                f"{Fore.RED}Error: No valid numbers provided. Exiting.{Style.RESET_ALL}"
+            )
             logger.warning("No valid phone numbers provided")
             return
 
@@ -543,7 +545,7 @@ async def main():
                 f"{Fore.CYAN}Enter the message you want to send: {Style.RESET_ALL}"
             ).strip()
             if not message:
-                print(f"{Fore.RED}⚠️ Message cannot be empty!{Style.RESET_ALL}")
+                print(f"{Fore.RED}Error: Message cannot be empty.{Style.RESET_ALL}")
                 logger.error("Empty message provided")
                 return
 
@@ -552,7 +554,7 @@ async def main():
                 sentiment = analyze_message_sentiment(message)
                 if "recommendation" in sentiment:
                     print(
-                        f"{Fore.YELLOW}🤖 AI Insight: {sentiment['recommendation']}{Style.RESET_ALL}"
+                        f"{Fore.YELLOW}AI Insight: {sentiment['recommendation']}{Style.RESET_ALL}"
                     )
 
             media_path = None
@@ -560,7 +562,7 @@ async def main():
         elif msg_type == 4:  # AI-Generated message
             if not AI_FEATURES_AVAILABLE or not ai_assistant:
                 print(
-                    f"{Fore.RED}🤖 AI features not available. Please install requirements.{Style.RESET_ALL}"
+                    f"{Fore.RED}AI features not available. Please install requirements.{Style.RESET_ALL}"
                 )
                 return
 
@@ -568,10 +570,10 @@ async def main():
                 f"{Fore.CYAN}Enter the context for AI message generation: {Style.RESET_ALL}"
             ).strip()
 
-            print(f"{Fore.YELLOW}🤖 Generating AI suggestions...{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}Generating AI suggestions...{Style.RESET_ALL}")
             try:
                 suggestions = await get_ai_message_suggestions(context)
-                print(f"\n{Fore.GREEN}🤖 AI Generated Suggestions:{Style.RESET_ALL}")
+                print(f"\n{Fore.GREEN}AI Generated Suggestions:{Style.RESET_ALL}")
                 for i, suggestion in enumerate(suggestions, 1):
                     print(f"{i}. {suggestion}")
 
@@ -600,7 +602,7 @@ async def main():
             media_path = get_media_path()
             if not media_path:
                 print(
-                    f"{Fore.RED}⚠️ No valid media file selected! Exiting.{Style.RESET_ALL}"
+                    f"{Fore.RED}Error: No valid media file selected. Exiting.{Style.RESET_ALL}"
                 )
                 logger.error("No valid media file selected")
                 return
@@ -630,7 +632,7 @@ async def main():
                 )
                 if repeat_count <= 0:
                     print(
-                        f"{Fore.RED}⚠️ Please enter a valid number greater than 0.{Style.RESET_ALL}"
+                        f"{Fore.RED}Error: Please enter a valid number greater than 0.{Style.RESET_ALL}"
                     )
                 else:
                     break
@@ -647,7 +649,7 @@ async def main():
                 )
                 if interval < min_interval:
                     print(
-                        f"{Fore.RED}⚠️ Please enter an interval of at least {min_interval} seconds.{Style.RESET_ALL}"
+                        f"{Fore.RED}Error: Please enter an interval of at least {min_interval} seconds.{Style.RESET_ALL}"
                     )
                 else:
                     break
@@ -688,7 +690,7 @@ async def main():
                         f"Message sent to {mobile} ({sent_count}/{total_messages})"
                     )
                     print(
-                        f"{Fore.GREEN}✅ Message {i+1} sent successfully to {mobile}{Style.RESET_ALL}"
+                        f"{Fore.GREEN}Message {i+1} sent successfully to {mobile}{Style.RESET_ALL}"
                     )
 
                     time.sleep(interval)  # User-defined delay between messages
@@ -702,18 +704,18 @@ async def main():
 
         # Final summary
         success_msg = config.get("messages", {}).get(
-            "success", "✅ All messages successfully sent!"
+            "success", "All messages successfully sent!"
         )
         print(f"\n{Fore.GREEN}{success_msg}{Style.RESET_ALL}")
         print(
-            f"{Fore.CYAN}📊 Summary: {sent_count} sent, {failed_count} failed out of {total_messages} total{Style.RESET_ALL}"
+            f"{Fore.CYAN}Summary: {sent_count} sent, {failed_count} failed out of {total_messages} total{Style.RESET_ALL}"
         )
         logger.info(
             f"Message delivery completed: {sent_count} sent, {failed_count} failed"
         )
 
     except KeyboardInterrupt:
-        print(f"\n{Fore.YELLOW}⚠️ Operation cancelled by user{Style.RESET_ALL}")
+        print(f"\n{Fore.YELLOW}Operation cancelled by user{Style.RESET_ALL}")
         logger.warning("Operation cancelled by user")
     except Exception as e:
         error_msg = f"{config.get('messages', {}).get('error_prefix', '❌ Error:')} {e}"
@@ -725,14 +727,14 @@ if __name__ == "__main__":
     logo()
     # Check for AI features availability
     if AI_FEATURES_AVAILABLE:
-        print(f"{Fore.GREEN}🤖 AI Features: Enabled (2025 Edition){Style.RESET_ALL}")
+        print(f"{Fore.GREEN}AI Features: Enabled (2025 Edition){Style.RESET_ALL}")
         if smart_scheduler:
-            print(f"{Fore.GREEN}📊 Smart Scheduler: Active{Style.RESET_ALL}")
+            print(f"{Fore.GREEN}Smart Scheduler: Active{Style.RESET_ALL}")
         if security_manager:
-            print(f"{Fore.GREEN}🔒 Enhanced Security: Active{Style.RESET_ALL}")
+            print(f"{Fore.GREEN}Enhanced Security: Active{Style.RESET_ALL}")
     else:
         print(
-            f"{Fore.YELLOW}🤖 AI Features: Install requirements for full 2025 experience{Style.RESET_ALL}"
+            f"{Fore.YELLOW}AI Features: Install requirements for full 2025 experience{Style.RESET_ALL}"
         )
 
     # Run async main function

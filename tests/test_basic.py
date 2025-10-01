@@ -16,6 +16,7 @@ def test_imports():
         import bot
         import json
         import re
+
         assert True
     except ImportError as e:
         pytest.skip(f"Required modules not available: {e}")
@@ -24,16 +25,20 @@ def test_imports():
 def test_basic_phone_validation():
     """Test basic phone number validation logic"""
     # Test with mock function if actual function isn't available
-    phone_pattern = r'^\+\d{10,15}$'
-    
+    phone_pattern = r"^\+\d{10,15}$"
+
     valid_numbers = ["+1234567890", "+919876543210", "+447700900123"]
     invalid_numbers = ["1234567890", "+123", "not_a_number", ""]
-    
+
     for number in valid_numbers:
-        assert bool(re.match(phone_pattern, number)), f"Valid number {number} should pass"
-    
+        assert bool(
+            re.match(phone_pattern, number)
+        ), f"Valid number {number} should pass"
+
     for number in invalid_numbers:
-        assert not bool(re.match(phone_pattern, number)), f"Invalid number {number} should fail"
+        assert not bool(
+            re.match(phone_pattern, number)
+        ), f"Invalid number {number} should fail"
 
 
 def test_config_structure():
@@ -47,9 +52,9 @@ def test_config_structure():
         "messages": {
             "welcome": "AI-Powered WhatsApp Bot 2025",
             "success": "All messages successfully sent!",
-        }
+        },
     }
-    
+
     assert config["default_settings"]["max_contacts"] == 50
     assert "welcome" in config["messages"]
     assert len(config["messages"]["welcome"]) > 0

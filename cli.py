@@ -100,7 +100,7 @@ def show_analytics(
 
     except ImportError:
         console.print(
-            "[red]❌ Analytics features not available. Install AI requirements.[/red]"
+            "[red]Analytics features not available. Install AI requirements.[/red]"
         )
 
 
@@ -123,7 +123,7 @@ def manage_config(
                 Panel(json.dumps(config, indent=2), title="⚙️ Current Configuration")
             )
         else:
-            console.print("[red]❌ No configuration file found[/red]")
+            console.print("[red]No configuration file found[/red]")
 
     elif reset:
         # Create default config
@@ -146,7 +146,7 @@ def manage_config(
         with open(config_path, "w") as f:
             json.dump(default_config, f, indent=2)
 
-        console.print("[green]✅ Configuration reset to defaults[/green]")
+        console.print("[green]Configuration reset to defaults[/green]")
 
 
 @app.command("contacts")
@@ -163,7 +163,7 @@ def manage_contacts(
             console.print(f"📥 [green]Importing contacts from {import_csv}[/green]")
             # Import logic here
         else:
-            console.print(f"[red]❌ File not found: {import_csv}[/red]")
+            console.print(f"[red]File not found: {import_csv}[/red]")
 
     if validate:
         console.print("🔍 [yellow]Validating contact data...[/yellow]")
@@ -248,26 +248,26 @@ def show_version():
     try:
         import openai  # noqa: F401
 
-        ai_status = "✅ Available"
+        ai_status = "Available"
         ai_version = "Latest"
     except ImportError:
-        ai_status = "❌ Not installed"
+        ai_status = "Not installed"
         ai_version = "N/A"
 
     try:
         from rich import __version__ as rich_version
 
-        rich_status = "✅ Available"
+        rich_status = "Available"
     except ImportError:
-        rich_status = "❌ Not installed"
+        rich_status = "Not installed"
         rich_version = "N/A"
 
     table.add_row("AI Features", ai_status, ai_version)
     table.add_row(
         "Rich UI", rich_status, rich_version if "rich_version" in locals() else "N/A"
     )
-    table.add_row("Security", "✅ Available", "2025")
-    table.add_row("Analytics", "✅ Available", "2025")
+    table.add_row("Security", "Available", "2025")
+    table.add_row("Analytics", "Available", "2025")
 
     console.print(table)
 
