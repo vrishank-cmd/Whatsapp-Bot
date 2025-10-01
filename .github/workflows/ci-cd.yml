@@ -48,7 +48,9 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=20 --max-line-length=140 --statistics
     
     - name: Format check with black
-      run: black --check . || echo "Code formatting check completed"
+      run: |
+        black --check . || echo "Code formatting issues found - would be auto-fixed in development"
+        echo "Black formatting check completed"
       continue-on-error: true
     
     - name: Type check with mypy
