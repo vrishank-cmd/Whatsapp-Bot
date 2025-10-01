@@ -16,6 +16,9 @@ try:
     AI_AVAILABLE = True
 except ImportError:
     AI_AVAILABLE = False
+    # Mock classes for testing when AI features aren't available
+    AIMessageAssistant = SmartScheduler = SecurityManager = ModernAnalytics = Mock
+    validate_phone_number = load_config = Mock
 
 
 class TestConfiguration:
