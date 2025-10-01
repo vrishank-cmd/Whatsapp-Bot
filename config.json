@@ -1,0 +1,23 @@
+{
+    "default_settings": {
+        "max_contacts": 50,
+        "min_interval_seconds": 5,
+        "max_retries": 3,
+        "log_level": "INFO",
+        "enable_logging": true,
+        "log_file": "whatsapp_bot.log"
+    },
+    "validation": {
+        "phone_pattern": "^\\+\\d{10,15}$",
+        "supported_image_formats": [".jpg", ".jpeg", ".png", ".gif"],
+        "supported_video_formats": [".mp4", ".avi", ".mov", ".mkv"],
+        "max_file_size_mb": 16
+    },
+    "messages": {
+        "welcome": "📲 **Automated WhatsApp Message Sender** 📩",
+        "success": "✅ All messages successfully sent!",
+        "error_prefix": "❌ Error:",
+        "warning_prefix": "⚠️ Warning:",
+        "info_prefix": "ℹ️ Info:"
+    }
+}
