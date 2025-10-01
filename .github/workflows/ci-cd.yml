@@ -1,4 +1,4 @@
-name: 🤖 AI WhatsApp Bot 2025 - CI/CD
+name: AI WhatsApp Bot 2025 - CI/CD
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, 3.10, 3.11, 3.12]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
     
     steps:
     - uses: actions/checkout@v4
@@ -118,7 +118,7 @@ jobs:
         tag_name: v2025.${{ github.run_number }}
         release_name: AI WhatsApp Bot 2025 - v2025.${{ github.run_number }}
         body: |
-          🤖 **AI-Powered WhatsApp Bot 2025 Release**
+          **AI-Powered WhatsApp Bot 2025 Release**
           
           ## New Features
           - Advanced AI integration
