@@ -1,4 +1,4 @@
-# 🚀 WhatsApp Bot Enhancement - Hacktoberfest 2024 Contribution
+# WhatsApp Bot Enhancement - Hacktoberfest 2024 Contribution
 
 ## Summary of Improvements
 
@@ -79,7 +79,7 @@ The new `config.json` allows users to customize:
 - Logging preferences
 - File validation settings
 
-## 🚀 Installation & Usage
+## Installation & Usage
 
 1. Install dependencies: `pip install -r requirements.txt`
 2. Run the bot: `python bot.py`

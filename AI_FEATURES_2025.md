@@ -1,6 +1,6 @@
 # AI-Powered WhatsApp Bot Features - 2025 Edition
 
-## 🤖 AI Integration Features
+## AI Integration Features
 
 ### 1. Smart Message Generation
 - AI-powered message suggestions based on context
