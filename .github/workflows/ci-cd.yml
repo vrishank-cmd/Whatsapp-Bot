@@ -129,37 +129,39 @@ jobs:
   #       cache-from: type=gha
   #       cache-to: type=gha,mode=max
 
-  release:
-    runs-on: ubuntu-latest
-    needs: [test, security]
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Create Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v2025.${{ github.run_number }}
-        release_name: AI WhatsApp Bot 2025 - v2025.${{ github.run_number }}
-        body: |
-          **AI-Powered WhatsApp Bot 2025 Release**
-          
-          ## New Features
-          - Advanced AI integration
-          - Enhanced security
-          - Modern analytics
-          - Async processing
-          
-          ## Improvements
-          - Better performance
-          - Enhanced UI/UX
-          - Security updates
-          
-          **Docker Image:** `whatsappbot/ai-bot-2025:${{ github.sha }}`
-        draft: false
-        prerelease: false
+  # Release job disabled for fork repositories to avoid permission issues
+  # Uncomment and configure when repository has proper release permissions
+  # release:
+  #   runs-on: ubuntu-latest
+  #   needs: [test, security]
+  #   if: github.ref == 'refs/heads/main' && github.repository_owner == 'vrishank-cmd'
+  #   
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       fetch-depth: 0
+  #   
+  #   - name: Create Release
+  #     uses: softprops/action-gh-release@v1
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     with:
+  #       tag_name: v2025.${{ github.run_number }}
+  #       name: AI WhatsApp Bot 2025 - v2025.${{ github.run_number }}
+  #       body: |
+  #         **AI-Powered WhatsApp Bot 2025 Release**
+  #         
+  #         ## New Features
+  #         - Advanced AI integration
+  #         - Enhanced security
+  #         - Modern analytics
+  #         - Async processing
+  #         
+  #         ## Improvements
+  #         - Better performance
+  #         - Enhanced UI/UX
+  #         - Security updates
+  #         
+  #         Built from commit: ${{ github.sha }}
+  #       draft: false
+  #       prerelease: false
