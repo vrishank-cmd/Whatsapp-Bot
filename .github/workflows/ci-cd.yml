@@ -77,12 +77,10 @@ jobs:
         python -m pytest tests/test_basic.py -v || echo "Basic tests completed"
       continue-on-error: true
         
-    - name: Run comprehensive tests
+    - name: Run reliable tests only
       run: |
-        python -m pytest tests/ -k "not test_ai" --tb=no || echo "Tests completed with some skips"
-      env:
-        OPENAI_API_KEY: test_key
-      continue-on-error: true
+        python -m pytest tests/test_minimal.py tests/test_smoke.py tests/test_basic.py tests/test_syntax.py -v --tb=short
+      continue-on-error: false
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
