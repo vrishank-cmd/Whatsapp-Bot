@@ -1,0 +1,21 @@
+# Test configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+addopts = [
+    "--tb=short",
+    "--strict-markers",
+    "--disable-warnings",
+    "--continue-on-collection-errors"
+]
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks tests as integration tests",
+    "ai: marks tests that require AI features",
+    "benchmark: marks tests that measure performance"
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning"
+]

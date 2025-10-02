@@ -1,0 +1,63 @@
+{
+    "default_settings": {
+        "max_contacts": 100,
+        "min_interval_seconds": 3,
+        "max_retries": 5,
+        "log_level": "INFO",
+        "enable_logging": true,
+        "log_file": "whatsapp_bot.log",
+        "enable_rich_ui": true,
+        "enable_async_processing": true
+    },
+    "ai_features": {
+        "enable_ai_suggestions": true,
+        "enable_sentiment_analysis": true,
+        "enable_smart_scheduling": true,
+        "enable_auto_translation": true,
+        "ai_model": "gpt-3.5-turbo",
+        "max_ai_suggestions": 5,
+        "sentiment_threshold": 0.7
+    },
+    "security": {
+        "enable_encryption": true,
+        "enable_input_validation": true,
+        "enable_rate_limiting": true,
+        "max_requests_per_minute": 60,
+        "enable_secure_logging": true
+    },
+    "analytics": {
+        "enable_analytics": true,
+        "track_delivery_status": true,
+        "track_response_times": true,
+        "enable_ml_insights": true,
+        "retention_days": 90
+    },
+    "validation": {
+        "phone_pattern": "^\\+\\d{10,15}$",
+        "supported_image_formats": [".jpg", ".jpeg", ".png", ".gif", ".webp", ".heic"],
+        "supported_video_formats": [".mp4", ".avi", ".mov", ".mkv", ".webm"],
+        "max_file_size_mb": 25,
+        "enable_ai_content_filter": true
+    },
+    "scheduling": {
+        "enable_smart_timing": true,
+        "timezone_aware": true,
+        "optimize_delivery_times": true,
+        "batch_processing": true,
+        "max_concurrent_sends": 5
+    },
+    "messages": {
+        "welcome": "AI-Powered WhatsApp Bot 2025",
+        "success": "All messages successfully sent with AI optimization!",
+        "error_prefix": "Error:",
+        "warning_prefix": "Warning:",
+        "info_prefix": "Info:",
+        "ai_prefix": "AI Assistant:"
+    },
+    "ui": {
+        "theme": "modern",
+        "enable_progress_bars": true,
+        "enable_animations": true,
+        "color_scheme": "cyberpunk"
+    }
+}
