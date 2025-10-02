@@ -17,7 +17,7 @@ Professional WhatsApp automation bot with advanced AI integration. This 2025 edi
 - **Rate Limiting** and abuse prevention
 - **Secure Logging** with audit trails
 
-### **Advanced Analytics**
+### Advanced Analytics
 - **Real-time Performance Dashboard**
 - **Machine Learning Insights**
 - **Predictive Success Rates**
