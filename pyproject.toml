@@ -12,7 +12,8 @@ addopts = [
 markers = [
     "slow: marks tests as slow",
     "integration: marks tests as integration tests",
-    "ai: marks tests that require AI features"
+    "ai: marks tests that require AI features",
+    "benchmark: marks tests that measure performance"
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",

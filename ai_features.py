@@ -14,16 +14,15 @@ try:
     from transformers import pipeline
     from cryptography.fernet import Fernet
     from dotenv import load_dotenv
-
+    
+    # Load environment variables
+    load_dotenv()
     AI_AVAILABLE = True
 except ImportError:
     AI_AVAILABLE = False
     print(
         "AI features not available. Install requirements: pip install -r requirements.txt"
     )
-
-# Load environment variables
-load_dotenv()
 
 
 class AIMessageAssistant:
@@ -316,8 +315,14 @@ class ModernAnalytics:
         }
 
 
-# Global instances
-ai_assistant = AIMessageAssistant() if AI_AVAILABLE else None
-smart_scheduler = SmartScheduler()
-security_manager = SecurityManager()
-analytics = ModernAnalytics()
+# Global instances - only create if AI dependencies are available
+if AI_AVAILABLE:
+    ai_assistant = AIMessageAssistant()
+    smart_scheduler = SmartScheduler()
+    security_manager = SecurityManager()
+    analytics = ModernAnalytics()
+else:
+    ai_assistant = None
+    smart_scheduler = None
+    security_manager = None
+    analytics = None
