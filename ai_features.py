@@ -1,7 +1,4 @@
-"""
-AI-Powered WhatsApp Bot Assistant - 2025 Edition
-Modern AI integration for intelligent messaging
-"""
+"""AI integration features for WhatsApp Bot"""
 
 import json
 import sqlite3

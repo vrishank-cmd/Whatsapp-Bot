@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Modern CLI Interface for AI-Powered WhatsApp Bot 2025
-Advanced command-line interface with rich formatting
-"""
+"""CLI Interface for WhatsApp Bot"""
 
 import typer
 from rich.console import Console
@@ -15,7 +12,7 @@ import json
 
 app = typer.Typer(
     name="whatsapp-bot",
-    help="AI-Powered WhatsApp Bot 2025 - Intelligent messaging automation",
+    help="WhatsApp Bot - Messaging automation",
     rich_markup_mode="rich",
 )
 console = Console()
@@ -42,7 +39,7 @@ def start_bot(
     )
 
     if ai_mode:
-        console.print("🧠 [green]AI Mode: Enabled[/green]")
+        console.print("[green]AI Mode: Enabled[/green]")
 
     with Progress(
         SpinnerColumn(),
@@ -96,7 +93,7 @@ def show_analytics(
         if export:
             with open(f"analytics_export_{days}d.json", "w") as f:
                 json.dump(report, f, indent=2)
-            console.print(f"📁 [green]Exported to analytics_export_{days}d.json[/green]")
+            console.print(f"[green]Exported to analytics_export_{days}d.json[/green]")
 
     except ImportError:
         console.print(
@@ -110,7 +107,7 @@ def manage_config(
     edit: bool = typer.Option(False, "--edit", help="Edit configuration"),
     reset: bool = typer.Option(False, "--reset", help="Reset to defaults"),
 ):
-    """⚙️ Manage bot configuration"""
+    """Manage bot configuration"""
 
     config_path = Path("config.json")
 
@@ -120,7 +117,7 @@ def manage_config(
                 config = json.load(f)
 
             console.print(
-                Panel(json.dumps(config, indent=2), title="⚙️ Current Configuration")
+                Panel(json.dumps(config, indent=2), title="Current Configuration")
             )
         else:
             console.print("[red]No configuration file found[/red]")
@@ -156,7 +153,7 @@ def manage_contacts(
     validate: bool = typer.Option(False, "--validate", help="Validate contacts"),
     encrypt: bool = typer.Option(False, "--encrypt", help="Encrypt contact data"),
 ):
-    """👥 Manage contacts with AI-powered features"""
+    """Manage contacts with AI-powered features"""
 
     if import_csv:
         if import_csv.exists():

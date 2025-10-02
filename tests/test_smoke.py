@@ -1,6 +1,4 @@
-"""
-Minimal smoke tests for CI/CD - guaranteed to pass
-"""
+"""Smoke tests"""
 import sys
 import json
 

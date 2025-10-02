@@ -1,6 +1,4 @@
-"""
-Ultra-minimal tests that should always pass in CI
-"""
+"""Minimal tests"""
 
 
 def test_python_works():

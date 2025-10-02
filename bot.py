@@ -219,7 +219,7 @@ def get_scheduled_time() -> Tuple[int, int]:
             if scheduled_time < now:
                 scheduled_time += timedelta(days=1)
                 print(
-                    f"{Fore.YELLOW}ℹ️ Time is in the past, scheduling for tomorrow at {hour:02d}:{minute:02d}{Style.RESET_ALL}"
+                    f"{Fore.YELLOW}Time is in the past, scheduling for tomorrow at {hour:02d}:{minute:02d}{Style.RESET_ALL}"
                 )
 
             logger.info(f"Scheduled time set: {hour:02d}:{minute:02d}")
@@ -343,7 +343,7 @@ def get_phone_numbers() -> Optional[List[str]]:
 
     if not numbers:
         print(
-            f"\n{Fore.CYAN}📞 Enter phone numbers (with country code). Type 'done' when finished:{Style.RESET_ALL}"
+            f"\n{Fore.CYAN}Enter phone numbers (with country code). Type 'done' when finished:{Style.RESET_ALL}"
         )
         print(
             f"{Fore.YELLOW}Warning: Maximum {max_contacts} contacts allowed.{Style.RESET_ALL}"
@@ -387,9 +387,9 @@ def get_message_type() -> int:
         try:
             if RICH_AVAILABLE and console:
                 console.print("\n[bold cyan]Message Type Selection[/bold cyan]")
-                console.print("1️⃣  Text Message (+ AI suggestions)")
-                console.print("2️⃣  Image/Photo")
-                console.print("3️⃣  Video")
+                console.print("1  Text Message (+ AI suggestions)")
+                console.print("2  Image/Photo")
+                console.print("3  Video")
                 console.print("4. AI-Generated Message")
                 console.print("5. Show Analytics Dashboard")
                 choice = input("\nSelect option (1-5): ").strip()
@@ -447,7 +447,7 @@ def show_analytics_dashboard():
             table.add_row("📧 Total Messages", str(report["total_messages"]))
             table.add_row("Delivery Rate", f"{report['delivery_rate']}%")
             table.add_row("👀 Read Rate", f"{report['read_rate']}%")
-            table.add_row("⏱️ Avg Response Time", f"{report['avg_response_time']}s")
+            table.add_row("Avg Response Time", f"{report['avg_response_time']}s")
 
             console.print(table)
 
@@ -463,7 +463,7 @@ def show_analytics_dashboard():
             print(f"📧 Total Messages: {report['total_messages']}")
             print(f"Delivery Rate: {report['delivery_rate']}%")
             print(f"👀 Read Rate: {report['read_rate']}%")
-            print(f"⏱️ Avg Response Time: {report['avg_response_time']}s")
+            print(f"Avg Response Time: {report['avg_response_time']}s")
 
         input(f"\n{Fore.YELLOW}Press Enter to continue...{Style.RESET_ALL}")
 
@@ -637,7 +637,7 @@ async def main():
                 else:
                     break
             except ValueError:
-                print(f"{Fore.RED}⚠️ Please enter a valid number.{Style.RESET_ALL}")
+                print(f"{Fore.RED}Please enter a valid number.{Style.RESET_ALL}")
 
         # Get interval between messages (in seconds)
         while True:
@@ -654,10 +654,10 @@ async def main():
                 else:
                     break
             except ValueError:
-                print(f"{Fore.RED}⚠️ Please enter a valid number.{Style.RESET_ALL}")
+                print(f"{Fore.RED}Please enter a valid number.{Style.RESET_ALL}")
 
         print(
-            f"\n{Fore.GREEN}📤 Sending messages to {len(numbers)} contacts...{Style.RESET_ALL}\n"
+            f"\n{Fore.GREEN}Sending messages to {len(numbers)} contacts...{Style.RESET_ALL}\n"
         )
         logger.info(f"Starting message delivery to {len(numbers)} contacts")
 

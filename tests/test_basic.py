@@ -1,6 +1,4 @@
-"""
-Basic functionality tests that don't require external dependencies
-"""
+"""Basic functionality tests"""
 import pytest
 import sys
 import os
