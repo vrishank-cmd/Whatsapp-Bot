@@ -3,7 +3,11 @@ import pandas as pd
 import time
 import re
 import os
+import logging
 from datetime import datetime, timedelta
+
+# Setup logging
+logging.basicConfig(filename='whatsapp_bot.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Function to display banner
 def show_banner():
@@ -59,10 +63,10 @@ def logo():
 """
     print(logo)
 
-def validate_phone_number(number):
+def validate_phone_number(number: str) -> bool:
     """Validate phone number format (basic validation for international format)."""
     pattern = r"^\+\d{10,15}$"  # Matches + followed by 10-15 digits
-    return re.match(pattern, number)
+    return re.match(pattern, number) is not None
 
 def get_scheduled_time():
     """Ensure the user enters a valid future time for message scheduling."""
@@ -190,17 +194,24 @@ def main():
             for i in range(repeat_count):
                 print(f"📨 Sending message {i+1}/{repeat_count} to {mobile}...")
 
-                if msg_type == 1:
-                    pywhatkit.sendwhatmsg(mobile, message, hour, minute)
-                elif msg_type == 2:
-                    pywhatkit.sendwhats_image(mobile, media_path, message)
-                elif msg_type == 3:
-                    pywhatkit.sendwhats_video(mobile, media_path, message)
+                try:
+                    if msg_type == 1:
+                        pywhatkit.sendwhatmsg(mobile, message, hour, minute)
+                    elif msg_type == 2:
+                        pywhatkit.sendwhats_image(mobile, media_path, message)
+                    elif msg_type == 3:
+                        pywhatkit.sendwhats_video(mobile, media_path, message)
+                    logging.info(f"Message {i+1} sent to {mobile}")
+                except Exception as e:
+                    logging.error(f"Failed to send message {i+1} to {mobile}: {e}")
+                    print(f"❌ Error sending to {mobile}: {e}")
 
                 time.sleep(interval)  # User-defined delay between messages
         print("\n✅ All messages successfully sent!")
+        logging.info("All messages sent successfully")
     except Exception as e:
         print(f"❌ Error: {e}")
+        logging.error(f"General error: {e}")
 
 if __name__ == "__main__":
     logo()
