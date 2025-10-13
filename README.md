@@ -1,49 +1,171 @@
-# Automate Your WhatsApp Messages with the Whatsapp-Bot
+# Whatsapp-Bot
 
-Take control of your WhatsApp messaging with the Whatsapp-Bot repository. This advanced Python script empowers you to automate sending messages via WhatsApp using the powerful pywhatkit library. With this script, you can effortlessly send text, images, or videos to multiple contacts, all with the flexibility of scheduling messages for later delivery or sending them instantly.
+> A simple **Python-based WhatsApp automation bot** built with **PyWhatKit**. It allows you to send **messages**, **images**, and **videos** to individuals or groups — either **scheduled** or **instantly**. This repository is a clean, refactored fork of a similar project and is licensed under MIT.
 
-## Features 🤖
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.8%2B-blue">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-green">
+  <img alt="Platform" src="https://img.shields.io/badge/Platform-Desktop%20%7C%20Laptop-lightgrey">
+</p>
 
-📱 **Send Various Message Types**: Whether you want to send a simple text message, share an image, or even send a video, the Whatsapp-Bot script has got you covered.
+## ✨ Features
 
-🕒 **Scheduled Messaging**: Plan your messages ahead of time with the scheduling feature, ensuring your messages are sent at the perfect moment.
+- Send **text messages** to phone numbers or groups.  
+- Send **images** (with optional captions).  
+- **Schedule** messages for specific times or send **instantly**.  
+- Supports **multiple recipients** (simple list-based looping).  
+- Works via **WhatsApp Web**, no Business API required.
 
-👥 **Message Multiple Contacts**: Easily send messages to multiple contacts at once, streamlining your communication process.
+> Note: PyWhatKit controls your browser to open `web.whatsapp.com`, select a chat, type, and send messages. Instant-send features may depend on your browser and system automation permissions.
 
-## Topics 📚
+---
 
-Dive into various topics related to this repository, including:
-- Artificial Intelligence
-- Automation
-- Bash Scripting
-- Bots
-- Coding
-- Capture the Flag (CTF)
-- Cybersecurity
-- Ethical Hacking
-- GitHub
-- Linux
-- Networking
-- Open-Source
-- Penetration Testing
-- Programming
-- Python
-- Red Teaming
-- Scripting
-- Software Development
-- Tools
-- WhatsApp
+## 📦 Requirements
 
-## Get Started 🚀
+- **Python 3.8+**
+- **Google Chrome** or supported default browser
+- Already logged into **WhatsApp Web**
+- Stable internet connection
+- Python package: `pywhatkit` (and dependencies such as `pyautogui`)
 
-Ready to take your WhatsApp messaging to the next level? Download the latest release of the Whatsapp-Bot script from [here](https://github.com/vrishank-cmd/Whatsapp-Bot/releases). Execute the file and start automating your messaging tasks seamlessly.
+---
 
-For more information and updates, visit the [repository](https://github.com/vrishank-cmd/Whatsapp-Bot).
+## 🚀 Installation
 
-## Stay Connected 📞
+```bash
+# 1) Clone the repo
+git clone https://github.com/ricoagista/Whatsapp-Bot.git
+cd Whatsapp-Bot
 
-Join the community of users leveraging the Whatsapp-Bot script for efficient messaging automation. Explore the possibilities and simplify your messaging workflow today!
+# 2) (Optional) Create a virtual environment
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS/Linux
+source .venv/bin/activate
 
---- 
+# 3) Install dependencies
+pip install -r Requirements.txt
+```
 
-With the Whatsapp-Bot script, streamline your WhatsApp messaging tasks and enhance your communication efficiency. Embrace the power of automation and take control of your messaging experience like never before. Install, execute, and elevate your messaging game with ease. Happy messaging! 🌟
+---
+
+## 🧪 Quick Usage
+
+### 1) Send **Instant Message**
+```python
+import pywhatkit as pwk
+
+pwk.sendwhatmsg_instantly(
+    phone_no="+6281234567890",
+    message="Hello from Whatsapp-Bot! 🎉",
+    wait_time=10,
+    tab_close=True,
+    close_time=5
+)
+```
+
+### 2) Send **Scheduled Message**
+```python
+import pywhatkit as pwk
+
+pwk.sendwhatmsg(
+    phone_no="+6281234567890",
+    message="Reminder: Meeting at 09:00",
+    time_hour=8,
+    time_min=59,
+    wait_time=15,
+    tab_close=True,
+    close_time=5
+)
+```
+
+### 3) Send **Image with Caption**
+```python
+import pywhatkit as pwk
+
+pwk.sendwhats_image(
+    receiver="+6281234567890",
+    img_path="poster.png",
+    caption="Poster for LSO Kaliber Event 📣",
+    wait_time=10,
+    tab_close=True,
+    close_time=5
+)
+```
+
+### 4) Send to **Multiple Contacts**
+```python
+import pywhatkit as pwk
+numbers = ["+628111111111", "+628222222222", "+628333333333"]
+for no in numbers:
+    pwk.sendwhatmsg_instantly(no, "Hello! Bulk message from Whatsapp-Bot.", 10, tab_close=True, close_time=5)
+```
+
+---
+
+## 🗂️ Project Structure
+
+```
+Whatsapp-Bot/
+├─ bot.py              # main script (can be turned into CLI)
+├─ Requirements.txt    # dependencies
+└─ LICENSE             # MIT License
+```
+
+---
+
+## ⚙️ Best Practices
+
+- **Keep screen awake** during scheduled sends.  
+- **Include country code** (e.g., `+62` for Indonesia).  
+- **Browser focus** may be needed for send confirmation.  
+- **Test with your own number** before bulk sending.  
+- Add **retry logic** for mass sending to avoid failed deliveries.
+
+---
+
+## ❗ Limitations
+
+- Uses **UI automation** on WhatsApp Web — UI changes may affect functionality.  
+- Some users report instant send stopping after typing; pressing Enter manually may help.  
+- Use responsibly and comply with **WhatsApp Terms of Service**.
+
+---
+
+## 🧰 Future Plans
+
+- [ ] Add CLI support (`python bot.py --file contacts.csv --msg "..." --mode instant`)
+- [ ] Add message templates (`{name}`, `{date}`, etc.)
+- [ ] Random delay generator to mimic human typing
+- [ ] Logging & success/failure reports
+
+---
+
+## 🤝 Contribution
+
+1. Fork this repo & create a new branch: `git checkout -b feat/new-feature`  
+2. Commit changes: `git commit -m "feat: add something"`  
+3. Push to branch: `git push origin feat/new-feature`  
+4. Create a Pull Request.
+
+---
+
+## 📜 License
+
+Distributed under the **MIT License**. See `LICENSE` for details.
+
+---
+
+## 🙏 Credits
+
+- **PyWhatKit** – main library for WhatsApp Web automation  
+- This repo is a cleaned-up, extended fork
+
+---
+
+## 🔗 References
+
+- [PyWhatKit GitHub](https://github.com/Ankit404butfound/PyWhatKit)
+- [PyPI – PyWhatKit](https://pypi.org/project/pywhatkit/)
+- [Documentation](https://github.com/Ankit404butfound/PyWhatKit/wiki)
